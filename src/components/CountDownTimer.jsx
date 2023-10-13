@@ -8,23 +8,31 @@ function CountDownTimer() {
 
    const deadline = new Date("Mar 21, 2027 23:59:59").getTime()
    
-   const countTime = ()=>{
+//    const countTime = ()=>{
 
-    const distance = deadline - new Date().getTime()     
-    setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, 0))
-    setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, 0))
-    setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, 0))
-    setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, 0))
-   }
+//     const distance = deadline - new Date().getTime()     
+//     setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, 0))
+//     setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, 0))
+//     setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, 0))
+//     setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, 0))
+//    }
 
    useEffect(()=>{
-    const intervalId = setInterval(()=> countTime(deadline), 1000)
+    // const intervalId = setInterval(()=> countTime(deadline), 1000)
+    const intervalId = setInterval(()=>{
+        const distance = deadline - new Date().getTime()     
+        setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, 0))
+        setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, 0))
+        setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, 0))
+        setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, 0))
 
-    return ()=> clearInterval(intervalId)
-    // if(distance < 0){
-    //     clearInterval(intervalId)
-    // }
+        if(distance < 0){
+            clearInterval(intervalId)
+        }
+    }         
+    , 1000)
 
+    // return ()=> clearInterval(intervalId)
    }, [])
 
 
