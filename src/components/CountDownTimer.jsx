@@ -1,53 +1,46 @@
 import React, { useEffect, useState } from 'react'
-
 function CountDownTimer() {
    const [days, setDays] = useState(0)
    const [hours, setHours] = useState(0)
    const [minutes, setMinutes] = useState(0)
    const [seconds, setSeconds] = useState(0)
-
+   const [countDownEnded, setCountDownEnded] = useState(false)
    const deadline = new Date("Mar 21, 2027 23:59:59").getTime()
-   
-//    const countTime = ()=>{
-
-//     const distance = deadline - new Date().getTime()     
-//     setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, 0))
-//     setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, 0))
-//     setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, 0))
-//     setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, 0))
-//    }
-
    useEffect(()=>{
-    // const intervalId = setInterval(()=> countTime(deadline), 1000)
     const intervalId = setInterval(()=>{
         const distance = deadline - new Date().getTime()     
+        if(distance < 0){
+            clearInterval(intervalId)
+            setCountDownEnded(true)
+        } else{
         setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, 0))
         setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, 0))
         setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, 0))
         setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, 0))
-
-        if(distance < 0){
-            clearInterval(intervalId)
-        }
+        }        
     }         
     , 1000)
-
-    // return ()=> clearInterval(intervalId)
+    return ()=> clearInterval(intervalId)
    }, [])
-
-
   return (
     <div className='flex flex-col gap-5 md:flex-row'>
-        <Days days={days}/>
-        <Hours hours={hours}/>
-        <Minutes minutes={minutes}/>
-        <Seconds seconds={seconds}/>
+        {countDownEnded ? (
+        <div className="flex flex-col">
+            <div className='text-2xl font-bold text-red-900'>CountDown Timer Ended. Set it again.</div>
+            <div className='text-7xl font-bold text-green-900'>Happy Norooz 1406!</div>
+        </div>
+            ) : (
+                <>
+                    <Days days={days}/>
+                    <Hours hours={hours}/>
+                    <Minutes minutes={minutes}/>
+                    <Seconds seconds={seconds}/>
+                </>
+            )}
     </div>
   )
 }
-
 export default CountDownTimer
-
 function Days({days}){
     return(
         <div className='flex flex-col items-center gap-5 flex-1'>
@@ -56,7 +49,6 @@ function Days({days}){
         </div>
     )
 }
-
 function Hours({hours}){
     return(
         <div className='flex flex-col items-center gap-5 flex-1'>
@@ -65,7 +57,6 @@ function Hours({hours}){
         </div>
     )
 }
-
 function Minutes({minutes}){
     return(
         <div className='flex flex-col items-center gap-5 flex-1'>
@@ -74,7 +65,6 @@ function Minutes({minutes}){
         </div>
     )
 }
-
 function Seconds({seconds}){
     return(
         <div className='flex flex-col items-center gap-5 flex-1'>
